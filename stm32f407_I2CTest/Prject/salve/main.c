@@ -57,9 +57,9 @@ int main(void)
   while(1)
 	{
 		
-		 salveSend();
-	   LED_Change(0);
-//	  salveRead(recerveData);
+		 // salveSend();
+	  LED_Change(0);
+	  salveRead(recerveData);
 //		if(recerveData[0]==0x02 || recerveData[1]== 0x78)
 //		{
 //			LED_Change(1);

@@ -23,6 +23,7 @@
 #include"Bsp_Led.h"
 #include"Bsp_I2C.h"
 #include"Bsp_Hcs4051.h"
+#include"Bsp_send_Data.h"
 /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
   * @{
   */ 
@@ -30,6 +31,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+I2C_InformationSendAndRecerve  pI2CParamAll;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
@@ -59,13 +61,15 @@ int main(void)
 //	SysTick_Config(Rcc_get.HCLK_Frequency/100);
 	//BSP_Init();	
 	//BSP_Tick_Init();
+	
   while(1)
 	{
 		LED_Change(0);
-	  LEDDelay(20);
+	  LEDDelay(100);
 		Bsp_HcsSlect(0);
-		Codec_WriteRegister(0x02,0x78);
-		hostRead(rece);
+		// Codec_WriteRegister(0x02,0x78);
+		SendPWM(rece);
+		// hostRead(rece);
 		// 
 	}
 	

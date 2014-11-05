@@ -23,7 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include"stm32f4xx_it.h"
-
+#include"Bsp_I2C.h"
 
 /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
   * @{
@@ -41,7 +41,80 @@ extern uint32_t LedTimeDelay;
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
 /******************************************************************************/
-
+void I2C1_EV_IRQHandler(void)
+{
+	uint32_t i2cEvent;
+	I2C_InformationSendAndRecerve __IO * I2C_InterruptBuff;
+  I2C_InterruptBuff=ARC_GetI2C_Information();  // get config address 
+	i2cEvent=I2C_GetLastEvent(I2C1);  // h获取状态标志位
+	switch(i2cEvent)  
+	{
+		 /*　设备　处于　I2C 主机 成功 */
+		case  I2C_EVENT_MASTER_MODE_SELECT: // EV5
+			I2C_AcknowledgeConfig(I2C1, ENABLE);  // 允许发送 响应信号 
+			// send adds as Transmitter
+		  // i2cEvent=ARC_I2C_DIRECTION_TX
+		  // 发送 从机地址  和 传输数据 命令 
+		// if(I2C_InterruptBuff->)
+			if(I2C_InterruptBuff->I2C_DIRECTION == ARC_I2C_DIRECTION_TX)
+			{
+				I2C_Send7bitAddress(I2C1, I2C_InterruptBuff->DeviceAddr, I2C_Direction_Transmitter); 
+			}else{
+				I2C_Send7bitAddress(I2C1, I2C_InterruptBuff->DeviceAddr, I2C_Direction_Receiver);   // 发送从机地址和请求数据命令
+			}				
+			break;
+		/* Master Transmitter -------------------------------------------------------*/
+		case I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED:  // EV 6 ADDR=1  /* 地址发送成功 */
+			I2C_SendData(I2C1,I2C_InterruptBuff->TxData[I2C_InterruptBuff->Tx_I2C_Index++]);  // send data 
+		  // end and disable TX buff 
+			if(I2C_InterruptBuff->TxNumOfBytes==1)
+			{
+				I2C_ITConfig(I2C1, I2C_IT_BUF, DISABLE);  // 禁止缓冲中断，，发送结束 TxE=1 不进中断
+			}
+			break;
+		case I2C_EVENT_MASTER_BYTE_TRANSMITTING:  /* Without BTF, EV8 */   // 发送 数据寄存器空 发送 为完成 
+			if(I2C_InterruptBuff->RX_I2C_Index<I2C_InterruptBuff->TxNumOfBytes)
+			{
+				I2C_SendData(I2C1,I2C_InterruptBuff->TxData[I2C_InterruptBuff->Tx_I2C_Index++]);
+			}else{
+				I2C_ITConfig(I2C1, I2C_IT_BUF, DISABLE);  // end and disable TX buff 
+			}		
+		case I2C_EVENT_MASTER_BYTE_TRANSMITTED: /* With BTF EV8-2 */   // 发送最后一个数据完成程序停止请求
+		/*    产生结束信号 */
+			if(I2C_InterruptBuff->TX_Generate_stop==1)
+			{
+				I2C_GenerateSTOP(I2C1, ENABLE);                // 产生停止位 
+				I2C_InterruptBuff->ok=1;
+				I2C_ITConfig(I2C1, I2C_IT_EVT, DISABLE);		
+			}else{  
+				/* 不产生结束   转换成接受模式 开始接收*/
+				I2C_InterruptBuff->I2C_DIRECTION=ARC_I2C_DIRECTION_RX; // 转换到 接收 模式
+				I2C_ITConfig(I2C1, I2C_IT_BUF, ENABLE);                //  开启缓冲中断
+				I2C_GenerateSTART(I2C1, ENABLE);										 // 产生开始信号 转到主机接收模式
+			}	
+		break;
+			
+		/* Master Recerve ------------------------------------------------------------*/
+		case I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED:   //  EV6  数据地址和接收模式匹配  总线处于忙状态   BUSY, MSL and ADDR flags 
+			/* 判断 发送最后一个字节前  停止 ACK应答 并产生 停止信号  */
+		/*
+		if(pI2C_param->RX_I2C_Index == (pI2C_param->RxNumOfBytes - 1))
+		{
+				I2C_AcknowledgeConfig(I2C1, DISABLE);
+				I2C_GenerateSTOP(I2C1, ENABLE);
+		}*/
+		break;
+		case I2C_EVENT_MASTER_BYTE_RECEIVED:  // EV7  数据接收成功 
+			/* 注意 接收最后一个数据前 停止发送响应信号并且发送停止信号*/
+//			pI2C_param->RxData[pI2C_param->RX_I2C_Index++] = I2C_ReceiveData (I2C1);
+//			if(pI2C_param->RX_I2C_Index == (pI2C_param->RxNumOfBytes - 1))
+//			{
+//				I2C_AcknowledgeConfig(I2C1, DISABLE);
+//				I2C_GenerateSTOP(I2C1, ENABLE);
+//			}			
+		break;
+	}
+}
 /**
   * @brief   This function handles NMI exception.
   * @param  None
@@ -191,47 +264,7 @@ void TIM2_IRQHandler(void)
   // USB_OTG_BSP_TimerIRQ();
 }
 
-void I2C1_EV_IRQHandler(void)
-{
-	uint32_t i2cEvent;
-	
-	i2cEvent=I2C_GetLastEvent(I2C1);  // h获取状态标志位
-	switch(i2cEvent)  
-	{
-		 /*　设备　处于　I2C 主机 成功 */
-		case  I2C_EVENT_MASTER_MODE_SELECT: // EV5
-			// send adds as Transmitter
-		  // i2cEvent=ARC_I2C_DIRECTION_TX
-		  // 发送 从机地址  和 传输数据 命令 
-			I2C_Send7bitAddress(I2C1, 0x01, I2C_Direction_Transmitter); 
-		  
-		  I2C_Send7bitAddress(I2C1, 0x01, I2C_Direction_Receiver);   // 发送从机地址和请求数据命令 
-			break;
-		/* Master Transmitter -------------------------------------------------------*/
-		case I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED:  // EV 6 ADDR=1  /* 地址发送成功 */
-			I2C_SendData(I2C1,0x01);  // 
-		  // end and disable TX buff 
-			I2C_ITConfig(I2C1, I2C_IT_BUF, DISABLE);   // if end 
-			break;
-		case I2C_EVENT_MASTER_BYTE_TRANSMITTING:  /* Without BTF, EV8 */ 
-			/* 
-			I2C_SendData(I2C1,0x01);
-		  // end and disable TX buff 
-			I2C_ITConfig(I2C1, I2C_IT_BUF, DISABLE);	
-			break;		
-		case I2C_EVENT_MASTER_BYTE_TRANSMITTED: /* With BTF EV8-2 */ 
-		/*    产生结束信号 
-			I2C_GenerateSTOP(I2C1, ENABLE);
-			I2C_ITConfig(I2C1, I2C_IT_EVT, DISABLE);		
-		*/ 	
-		/*   不产生结束   转换成接受模式 开始接收
-			pI2C_param->I2C_DIRECTION = ARC_I2C_DIRECTION_RX;
-			I2C_ITConfig(I2C1, I2C_IT_BUF, ENABLE);
-			I2C_GenerateSTART(I2C1, ENABLE);
-		*/
-		break;
-	}
-}
+
 
 /**
   * @brief  This function handles USB-On-The-Go FS global interrupt request.

@@ -5,6 +5,7 @@
 	#define OWNADD  0x33
 #endif 
 uint32_t CODECTimeout;
+I2C_InformationSendAndRecerve * GolbeI2C_Buff;   // 缓冲 I2C配置变量地址
 uint32_t Codec_TIMEOUT_UserCallback(void)
 {   
 	while(1)
@@ -46,7 +47,7 @@ static void Codec_CtrlInterface_Init(void)
   I2C_DeInit(CODEC_I2C);
   I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
   I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-  I2C_InitStructure.I2C_OwnAddress1 = 0x90;
+  I2C_InitStructure.I2C_OwnAddress1 = 0x91;
   I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
   I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
   I2C_InitStructure.I2C_ClockSpeed = I2C_SPEED;
@@ -59,8 +60,10 @@ void Bsp_I2C_init()
 	_I2C_IOInit();
 	Codec_CtrlInterface_Init();
 //  allow I2C interrupt 
-//	I2C_ITConfig(CODEC_I2C,I2C_IT_EVT,ENABLE);
-//	NVIC_I2C_Interrupt();
+	#ifndef SAlVE1
+	I2C_ITConfig(CODEC_I2C,I2C_IT_EVT,ENABLE);
+	NVIC_I2C_Interrupt();
+	#endif 
 }
 void NVIC_I2C_Interrupt(void)
 {
@@ -71,7 +74,14 @@ void NVIC_I2C_Interrupt(void)
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;     //中断使能
 	NVIC_Init(&NVIC_InitStructure);	
 }
-
+void ARC_SetI2C_Information(I2C_InformationSendAndRecerve * P_setValue)
+{
+	GolbeI2C_Buff=P_setValue;
+}
+I2C_InformationSendAndRecerve * ARC_GetI2C_Information(void)
+{
+	return GolbeI2C_Buff;
+}
 #ifdef SAlVE1  
 /*********************************************************************************************
 																			I2C 作为 从机
@@ -83,26 +93,26 @@ void salveRead(uint8_t * dataBuff)
 	CODECTimeout = CODEC_LONG_TIMEOUT;
 	while (!I2C_CheckEvent(CODEC_I2C, I2C_EVENT_SLAVE_RECEIVER_ADDRESS_MATCHED))   
 	{
-		 if((CODECTimeout--) == 0) goto start;
+		 // if((CODECTimeout--) == 0) goto start;
 	}
 	/* wait for recerve a data */
 	CODECTimeout = CODEC_LONG_TIMEOUT;
 	while (!I2C_CheckEvent(CODEC_I2C, I2C_EVENT_SLAVE_BYTE_RECEIVED))   
 	{
-		if((CODECTimeout--) == 0) goto start;
+		// if((CODECTimeout--) == 0) goto start;
 	}
 	dataBuff[0]=I2C_ReceiveData(CODEC_I2C);
 	CODECTimeout = CODEC_LONG_TIMEOUT;
 	while (!I2C_CheckEvent(CODEC_I2C, I2C_EVENT_SLAVE_BYTE_RECEIVED))   
 	{
-		if((CODECTimeout--) == 0) goto start;
+		// if((CODECTimeout--) == 0) goto start;
 	}
 	dataBuff[1]=I2C_ReceiveData(CODEC_I2C);
 	//
 	CODECTimeout = CODEC_LONG_TIMEOUT;
 	while (!I2C_CheckEvent(CODEC_I2C, I2C_EVENT_SLAVE_STOP_DETECTED))   
 	{
-		if((CODECTimeout--) == 0) goto start;
+		// if((CODECTimeout--) == 0) goto start;
 	}	
   /* End the configuration sequence */
   I2C_GenerateSTOP(CODEC_I2C, ENABLE);  
@@ -144,6 +154,29 @@ void salveSend(void)
 /*********************************************************************************************
 																			I2C 作为 主机部分 
 **********************************************************************************************/
+I2C_Return I2C_Master_Transmitter(I2C_InformationSendAndRecerve * I2CPram)
+{
+	I2C_Return retStat;  
+	retStat=I2C_Ok;   
+	ARC_SetI2C_Information(I2CPram);   // 存储数据到缓冲变量
+// 	I2C_InterruptBuff=I2CPram;	
+	/* wait for Bus is not busy */
+  CODECTimeout = CODEC_LONG_TIMEOUT;
+  while(I2C_GetFlagStatus(CODEC_I2C, I2C_FLAG_BUSY))
+  {
+    if((CODECTimeout--) == 0)  return I2C_Error;    // return this function 
+  }
+	I2C_ITConfig(I2C1, I2C_IT_BUF, ENABLE);   // 缓冲中断使能 
+  /* Start the config sequence */
+  I2C_GenerateSTART(CODEC_I2C, ENABLE);	  
+	/* Then to go to interrupt to deal  */ 
+	//  while()//   发送数据可以不等带 。。主机程序中必须   等待发送成功，，可以适当延时
+	return retStat;
+}
+I2C_Return I2C_Master_Recerve(I2C_InformationSendAndRecerve * I2CPram)
+{
+	return 0;
+}
 uint32_t Codec_WriteRegister(uint8_t RegisterAddr, uint8_t RegisterValue)
 {
   uint32_t result = 0;
@@ -156,7 +189,7 @@ uint32_t Codec_WriteRegister(uint8_t RegisterAddr, uint8_t RegisterValue)
   }
   
   /* Start the config sequence */
-  I2C_GenerateSTART(CODEC_I2C, ENABLE);
+  I2C_GenerateSTART(CODEC_I2C, ENABLE);   
 
   /* Test on EV5 and clear it */
   CODECTimeout = CODEC_FLAG_TIMEOUT;
