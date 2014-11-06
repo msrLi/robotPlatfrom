@@ -41,7 +41,7 @@ I2C_InformationSendAndRecerve  pI2CParamAll;
   * @param  None
   * @retval None
 */
-uint8_t rece[2];
+uint8_t rece[4];
 int main(void)
 { 
 //	RCC_ClocksTypeDef Rcc_get;   // ¸÷Â·Ê±ÖÓ 
@@ -68,7 +68,7 @@ int main(void)
 	  LEDDelay(100);
 		Bsp_HcsSlect(0);
 		// Codec_WriteRegister(0x02,0x78);
-		SendPWM(rece);
+	  SendPWM(rece);
 		// hostRead(rece);
 		// 
 	}
