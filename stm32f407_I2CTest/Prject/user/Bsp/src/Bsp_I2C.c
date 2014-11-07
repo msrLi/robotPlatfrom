@@ -155,7 +155,9 @@ void salveSend(void)
   /* Clear AF flag for next communication */
 //  I2C_ClearFlag(CODEC_I2C, I2C_FLAG_AF); 
   /* End the configuration sequence */
-  I2C_GenerateSTOP(CODEC_I2C, ENABLE);  	
+      (void)(I2C_GetITStatus(I2C2, I2C_IT_STOPF));   //产生结束标志 通过读写I2C_SR1 然后通过写  I2C_CR1
+       I2C_Cmd(I2C2, ENABLE);		 
+   // I2C_GenerateSTOP(CODEC_I2C, ENABLE);  	
 }
 
 #else

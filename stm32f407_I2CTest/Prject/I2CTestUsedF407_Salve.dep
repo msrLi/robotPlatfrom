@@ -38,7 +38,7 @@ I (.\FWlib\inc\stm32f4xx_tim.h)(0x4EAA13FA)
 I (.\FWlib\inc\stm32f4xx_usart.h)(0x4EAA13FA)
 I (.\FWlib\inc\stm32f4xx_wwdg.h)(0x4EAA13FA)
 I (.\FWlib\inc\misc.h)(0x4EAA13FA)
-F (.\user\Bsp\src\Bsp_I2C.c)(0x5459F461)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork -I.\CMSI\inc -I.\CMSI -I.\FWlib -I.\FWlib\inc -I.\FWlib\src -I.\listing -I.\user -I.\user\inc -I.\user\src -I.\user\Bsp\inc-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DSAlVE1 -o .\output\bsp_i2c.o --omf_browse .\output\bsp_i2c.crf --depend .\output\bsp_i2c.d)
+F (.\user\Bsp\src\Bsp_I2C.c)(0x545C2244)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork -I.\CMSI\inc -I.\CMSI -I.\FWlib -I.\FWlib\inc -I.\FWlib\src -I.\listing -I.\user -I.\user\inc -I.\user\src -I.\user\Bsp\inc-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DSAlVE1 -o .\output\bsp_i2c.o --omf_browse .\output\bsp_i2c.crf --depend .\output\bsp_i2c.d)
 I (.\user\Bsp\inc\Bsp_I2C.h)(0x5458DABD)
 I (.\user\stm32f4xx.h)(0x4EAA13F6)
 I (.\CMSI\inc\core_cm4.h)(0x4EAA13F6)

@@ -1,12 +1,12 @@
-.\output\main.o: salve\main.c
-.\output\main.o: .\user\stm32f4xx.h
+.\output\main.o: user\main.c
+.\output\main.o: user\stm32f4xx.h
 .\output\main.o: .\CMSI\inc\core_cm4.h
 .\output\main.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
 .\output\main.o: .\CMSI\inc\core_cmInstr.h
 .\output\main.o: .\CMSI\inc\core_cmFunc.h
 .\output\main.o: .\CMSI\inc\core_cm4_simd.h
-.\output\main.o: .\user\system_stm32f4xx.h
-.\output\main.o: .\user\stm32f4xx_conf.h
+.\output\main.o: user\system_stm32f4xx.h
+.\output\main.o: user\stm32f4xx_conf.h
 .\output\main.o: .\FWlib\inc\stm32f4xx_adc.h
 .\output\main.o: .\user\stm32f4xx.h
 .\output\main.o: .\FWlib\inc\stm32f4xx_can.h
@@ -36,3 +36,5 @@
 .\output\main.o: .\FWlib\inc\misc.h
 .\output\main.o: .\user\Bsp\inc\Bsp_Led.h
 .\output\main.o: .\user\Bsp\inc\Bsp_I2C.h
+.\output\main.o: .\user\Bsp\inc\Bsp_Hcs4051.h
+.\output\main.o: .\user\Bsp\inc\Bsp_send_Data.h
