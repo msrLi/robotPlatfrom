@@ -60,25 +60,46 @@ void Delay(vu32 nCount)
   for(; nCount != 0; nCount--);
 }
 uint8_t rece[4];
+uint8_t I2C1MasterRecerve[8];
+void masterRecerve(void)
+{
+// 	DMA_InitTypeDef  DMA_InitStructure;
+
+	
+	I2C_AcknowledgeConfig(I2C1, ENABLE);	
+
+  /* Send START condition */
+  if(I2C1->CR1 & 0x200)
+    I2C1->CR1 &= 0xFDFF;
+  I2C_GenerateSTART(I2C1, ENABLE);
+  /* Test on I2C1 EV5 and clear it */
+  while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT)); 	
+	
+	I2C_Send7bitAddress(I2C1, I2C1_SLAVE_ADDRESS7, I2C_Direction_Receiver);	// send address 
+  /* Test on I2C1 EV6 and clear it */
+  while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));  
+	// I2C_ITConfig(I2C1, I2C_IT_EVT | I2C_IT_BUF, DISABLE);
+	//without it, no NAK signal on bus after last Data
+	//I2C data line would be hold low ~~~
+	I2C_DMALastTransferCmd(I2C1, ENABLE);
+	I2C_DMACmd(I2C1, ENABLE);
+  DMA_Cmd(DMA1_Stream5, ENABLE); 	
+
+	while(DMA_GetFlagStatus(DMA1_Stream5,DMA_FLAG_TCIF5)==RESET)  // 等待 DMA 接收结束 
+	{
+	}	
+  I2C_DMACmd(I2C1, DISABLE);
+	/* 清除DMA数据 */
+	
+  I2C_GenerateSTOP(I2C1, ENABLE);	
+	DMA_Cmd(DMA1_Stream5, DISABLE);
+	DMA_ClearFlag(DMA1_Stream5,DMA_FLAG_TCIF5 | DMA_FLAG_HTIF5 | DMA_FLAG_TEIF5 | DMA_FLAG_DMEIF5 | DMA_FLAG_FEIF5 ); 	
+	I2C_ClearFlag(I2C1, I2C_FLAG_AF);
+ // clean ACK and STOP	
+}
 int main(void)
 { 
-//	RCC_ClocksTypeDef Rcc_get;   // 各路时钟 
-//	RCC_GetClocksFreq(&Rcc_get);
-//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
-//	Bsp_InitLed();
-//	GPIO_WriteBit(GPIOD,GPIO_Pin_4,Bit_RESET);
-//	LEDDelay(10);
-//	GPIO_WriteBit(GPIOD,GPIO_Pin_4,Bit_SET);
-//	Bsp_I2C_init();
-////#ifndef SAlVE1
-//	Bsp_Hcs4051_Init();
-//	Bsp_HcsSlect(1);
-//	Bsp_Hcs_disEn(ENABLE);
-//#endif
-	
-//	SysTick_Config(Rcc_get.HCLK_Frequency/100);
-	//BSP_Init();	
-	//BSP_Tick_Init();
+	uint8_t i;
   GPIO_InitTypeDef GPIO_InitStructure;
 	I2C_InitTypeDef  I2C_InitStructure;
   DMA_InitTypeDef  DMA_InitStructure;
@@ -110,9 +131,23 @@ int main(void)
   DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
   DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
   DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
- 
+	
   DMA_Init(DMA1_Stream6, &DMA_InitStructure);
-//  DMA_Cmd(DMA1_Stream6, ENABLE);
+
+  DMA_DeInit(DMA1_Stream5);
+	DMA_InitStructure.DMA_Channel=DMA_Channel_1;
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)I2C1_DR_Address;
+  DMA_InitStructure.DMA_Memory0BaseAddr = (u32)I2C1MasterRecerve;
+  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;
+  DMA_InitStructure.DMA_BufferSize = BufferSize;
+  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 指定外设地址不增加 
+  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  // 指定内存地址加一
+  DMA_InitStructure.DMA_PeripheralDataSize = DMA_MemoryDataSize_Byte;   // 传输数据 字大小 
+  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+  DMA_Init(DMA1_Stream5, &DMA_InitStructure);	
+	
   
   /* I2C1 configuration ------------------------------------------------------*/
   I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
@@ -127,6 +162,32 @@ int main(void)
   while(1)
 	{
 		
+		masterRecerve();
+		for(i=0;i<6;i++)
+		{
+			if(I2C1MasterRecerve[i]!=i+2) break;
+			else 
+				I2C1MasterRecerve[i]=0;
+			if(i==5)
+			{
+				LED_Change(0);
+			}
+		}
+		
+		Delay(0xAFFFF);		
+		
+//	  LEDDelay(100);
+//		Bsp_HcsSlect(0);
+//		// Codec_WriteRegister(0x02,0x78);
+//	  SendPWM(rece);
+//		// hostRead(rece);
+//		// 
+	}
+	
+}
+void masterSend(void)
+{
+	DMA_InitTypeDef  DMA_InitStructure;
 		/*----- Transmission Phase -----*/
 		/* wait for bus is not busy  */
   DMA_DeInit(DMA1_Stream6);
@@ -174,15 +235,6 @@ int main(void)
     // I2C_GenerateSTOP(I2C1, ENABLE);		
 		Delay(0xAFFFF);		
 		LED_Change(0);
-//	  LEDDelay(100);
-//		Bsp_HcsSlect(0);
-//		// Codec_WriteRegister(0x02,0x78);
-//	  SendPWM(rece);
-//		// hostRead(rece);
-//		// 
-	}
-	
 }
-
   
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

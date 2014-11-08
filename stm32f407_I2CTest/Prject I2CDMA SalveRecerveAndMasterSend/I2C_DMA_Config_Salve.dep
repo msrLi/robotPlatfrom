@@ -1,7 +1,7 @@
 Dependencies for Project 'I2C_DMA_Config', Target 'Salve': (DO NOT MODIFY !)
 F (.\user\stm32f4xx_it.c)(0x5459DC42)()
 F (.\user\stm32f4xx_conf.h)(0x4EAA1406)()
-F (.\user\main.c)(0x545C879F)()
+F (.\user\main.c)(0x545CAB84)()
 F (.\user\Bsp\src\Bsp_Led.c)(0x545C24B7)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork -I.\CMSI\inc -I.\CMSI -I.\FWlib -I.\FWlib\inc -I.\FWlib\src -I.\listing -I.\user -I.\user\inc -I.\user\src -I.\user\Bsp\inc-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DSAlVE1 -o .\output\bsp_led.o --omf_browse .\output\bsp_led.crf --depend .\output\bsp_led.d)
 I (.\user\Bsp\inc\Bsp_Led.h)(0x53B3B0DD)
 I (.\user\stm32f4xx.h)(0x4EAA13F6)
@@ -1233,7 +1233,7 @@ I (.\FWlib\inc\stm32f4xx_syscfg.h)(0x4EAA13FA)
 I (.\FWlib\inc\stm32f4xx_tim.h)(0x4EAA13FA)
 I (.\FWlib\inc\stm32f4xx_usart.h)(0x4EAA13FA)
 I (.\FWlib\inc\misc.h)(0x4EAA13FA)
-F (.\salve\main.c)(0x545CA173)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork -I.\CMSI\inc -I.\CMSI -I.\FWlib -I.\FWlib\inc -I.\FWlib\src -I.\listing -I.\user -I.\user\inc -I.\user\src -I.\user\Bsp\inc-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DSAlVE1 -o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
+F (.\salve\main.c)(0x545D7C91)(-c --cpu Cortex-M4.fp -g -O0 --apcs=interwork -I.\CMSI\inc -I.\CMSI -I.\FWlib -I.\FWlib\inc -I.\FWlib\src -I.\listing -I.\user -I.\user\inc -I.\user\src -I.\user\Bsp\inc-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include-I C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DSAlVE1 -o .\output\main.o --omf_browse .\output\main.crf --depend .\output\main.d)
 I (.\user\stm32f4xx.h)(0x4EAA13F6)
 I (.\CMSI\inc\core_cm4.h)(0x4EAA13F6)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x52FDD27E)

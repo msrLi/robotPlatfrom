@@ -44,7 +44,7 @@ typedef enum i2c_state
 #define I2C1_SLAVE_ADDRESS7    0x30
 #define I2C1_SLAVE_ADDRESS7    0x30
 #define BufferSize             6
-#define ClockSpeed             200000
+#define ClockSpeed             100000
 
 /* Private variables ---------------------------------------------------------*/
 I2C_InitTypeDef  I2C_InitStructure;

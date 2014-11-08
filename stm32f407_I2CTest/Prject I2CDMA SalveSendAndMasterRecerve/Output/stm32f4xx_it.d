@@ -1,13 +1,13 @@
-.\output\stm32f4xx_it.o: user\stm32f4xx_it.c
-.\output\stm32f4xx_it.o: user\stm32f4xx_it.h
-.\output\stm32f4xx_it.o: user\stm32f4xx.h
+.\output\stm32f4xx_it.o: salve\stm32f4xx_it.c
+.\output\stm32f4xx_it.o: .\user\stm32f4xx_it.h
+.\output\stm32f4xx_it.o: .\user\stm32f4xx.h
 .\output\stm32f4xx_it.o: .\CMSI\inc\core_cm4.h
 .\output\stm32f4xx_it.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
 .\output\stm32f4xx_it.o: .\CMSI\inc\core_cmInstr.h
 .\output\stm32f4xx_it.o: .\CMSI\inc\core_cmFunc.h
 .\output\stm32f4xx_it.o: .\CMSI\inc\core_cm4_simd.h
-.\output\stm32f4xx_it.o: user\system_stm32f4xx.h
-.\output\stm32f4xx_it.o: user\stm32f4xx_conf.h
+.\output\stm32f4xx_it.o: .\user\system_stm32f4xx.h
+.\output\stm32f4xx_it.o: .\user\stm32f4xx_conf.h
 .\output\stm32f4xx_it.o: .\FWlib\inc\stm32f4xx_adc.h
 .\output\stm32f4xx_it.o: .\user\stm32f4xx.h
 .\output\stm32f4xx_it.o: .\FWlib\inc\stm32f4xx_can.h
@@ -35,4 +35,3 @@
 .\output\stm32f4xx_it.o: .\FWlib\inc\stm32f4xx_usart.h
 .\output\stm32f4xx_it.o: .\FWlib\inc\stm32f4xx_wwdg.h
 .\output\stm32f4xx_it.o: .\FWlib\inc\misc.h
-.\output\stm32f4xx_it.o: .\user\Bsp\inc\Bsp_I2C.h

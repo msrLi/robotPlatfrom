@@ -37,23 +37,20 @@ extern uint32_t LedTimeDelay;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-extern void i2c1_evt_isr();
-extern void i2c1_err_isr();
-extern void i2c1_Slave_receive_dma_isr();
+
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
 /******************************************************************************/
 void DMA1_Stream5_IRQHandler(void)  // DMA  
 {
-	i2c1_Slave_receive_dma_isr();
+	
 }
 void I2C1_EV_IRQHandler(void)
 {
-	i2c1_evt_isr();
+	
 }
 void I2C1_RV_IRQHandler(void)
 {
-	i2c1_err_isr();
 }
 /**
   * @brief   This function handles NMI exception.
