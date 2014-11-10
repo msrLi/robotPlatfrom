@@ -35,7 +35,7 @@
 uint8_t GetUart1Data[4];
 
 //static void init_usart1(void);
-static void init_I2C(void);
+void init_I2C(void);
 void Send(uint8_t dat);
 void SendSting(char * str);
 void recerve_usart_intdeal(void);
@@ -69,20 +69,49 @@ void slaveSend(void)
 }
 void main(void)
 {   
+  uint8_t daBuff;
+  uint8_t i;
   /* Initialize I/Os in Output Mode */
 //  GPIO_Init(LED_GPIO_PORT, (GPIO_Pin_TypeDef)LED_GPIO_PINS, GPIO_MODE_OUT_PP_HIGH_SLOW);
 //   GPIO_Init(GPIOB,GPIO_PIN_5,GPIO_MODE_OUT_PP_LOW_FAST);
 // GPIO_WriteLow(GPIOB,GPIO_PIN_5);
-  init_I2C();
+   init_I2C();
 
+    GPIO_Init(GPIOC,GPIO_PIN_3,GPIO_MODE_IN_PU_NO_IT);       // 输入包含  上拉  中断 
+    // EXTI_SetExtIntSensitivity(EXTI_PORT_GPIOC,EXTI_SENSITIVITY_FALL_ONLY);  //外部中断触发初始化   下降沿和低电平
 
+    
   // addressUsart=0x02;
-  //enableInterrupts(); 
+  // enableInterrupts(); 
   while (1)
   {
+    sendBuff[0]=0x08;
+    sendBuff[1]=0x06;
+    sendBuff[2]=0xff;
+    sendBuff[3]=0xff;
+    sendBuff[4]=0xff;
+    sendBuff[5]=0;
+    for(i=0;i<5;i++)
+    {
+      sendBuff[5]+=sendBuff[i];
+    }
+    daBuff=GPIO_ReadInputPin(GPIOC,GPIO_PIN_3);
+    if(daBuff==0)
+   {
+////      // I2C_Cmd(ENABLE);
+////      // init_I2C();
+////      slaveSend();
+////      // I2C_Cmd(DISABLE);
+////    }
+    I2C_Cmd(ENABLE);
+    
+    slaveSend();
+    init_I2C();
+  }
+    // I2C_Cmd(DISABLE);
     // Delay(0xffff);
     // GPIO_WriteReverse(GPIOB,GPIO_PIN_5);
-    slaveSend();
+    // slaveSend();
     // readI2C(GetUart1Data);
   }
   
@@ -100,10 +129,10 @@ void readI2C(uint8_t * buff)
   I2C_GenerateSTOP(ENABLE);  
   
 }
-static void init_I2C(void)
+void init_I2C(void)
 {
   I2C_DeInit();
-  I2C_Cmd(ENABLE);
+  //I2C_Cmd(ENABLE);
   I2C_Init(200000, 0x30, I2C_DUTYCYCLE_2,\
 		I2C_ACK_CURR, I2C_ADDMODE_7BIT, CLK_GetClockFreq()/2000000);
   // I2C_AcknowledgeConfig(I2C_ACK_CURR);   // enable ack 

@@ -30,6 +30,8 @@
 //extern void recerve_usart_intdeal(void);
 extern uint8_t ReceFLag;     // 
 extern uint8_t GetUart1Data[4];
+extern  void slaveSend();
+extern  void init_I2C();
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -125,6 +127,7 @@ INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  
 }
 
 /**
@@ -137,6 +140,11 @@ INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
   /* In order to detect unexpected events during development,
      it is recommended to set a breakpoint on the following instruction.
   */
+  I2C_Cmd(DISABLE);
+  disableInterrupts();
+  slaveSend();
+  enableInterrupts(); 
+  init_I2C();
 }
 
 /**

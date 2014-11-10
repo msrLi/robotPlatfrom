@@ -24,6 +24,7 @@
 #include"Bsp_I2C.h"
 #include"Bsp_Hcs4051.h"
 #include"Bsp_send_Data.h"
+#include"Bsp_I2C_DMA.h"
 /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
   * @{
   */ 
@@ -100,69 +101,96 @@ void masterRecerve(void)
 int main(void)
 { 
 	uint8_t i;
-  GPIO_InitTypeDef GPIO_InitStructure;
-	I2C_InitTypeDef  I2C_InitStructure;
-  DMA_InitTypeDef  DMA_InitStructure;
-  /* Enable the CODEC_I2C peripheral clock */
-  RCC_APB1PeriphClockCmd(CODEC_I2C_CLK, ENABLE);
-	RCC_AHB1PeriphClockCmd(CODEC_I2C_GPIO_CLOCK, ENABLE);
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
-  /* CODEC_I2C SCL and SDA pins configuration -------------------------------------*/
-  GPIO_InitStructure.GPIO_Pin = CODEC_I2C_SCL_PIN | CODEC_I2C_SDA_PIN; 
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(CODEC_I2C_GPIO, &GPIO_InitStructure);     
-  /* Connect pins to I2C peripheral */
-  GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SCL_PINSRC, CODEC_I2C_GPIO_AF);  
-  GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SDA_PINSRC, CODEC_I2C_GPIO_AF);
-	
-  /* DMA1 channel_6 configuration ----------------------------------------------*/
-  DMA_DeInit(DMA1_Stream6);
-	DMA_InitStructure.DMA_Channel=DMA_Channel_1;
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)I2C1_DR_Address;
-  DMA_InitStructure.DMA_Memory0BaseAddr = (u32)I2C1_Buffer_Tx;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;      // 从内存到 外设 
-  DMA_InitStructure.DMA_BufferSize = BufferSize;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 指定外设地址不增加 
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  // 指定内存地址加一
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_MemoryDataSize_Byte;   // 传输数据 字大小 
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
-	
-  DMA_Init(DMA1_Stream6, &DMA_InitStructure);
+//  GPIO_InitTypeDef GPIO_InitStructure;
+//	I2C_InitTypeDef  I2C_InitStructure;
+//  DMA_InitTypeDef  DMA_InitStructure;
+//	NVIC_InitTypeDef NVIC_InitStructure;
+//  /* Enable the CODEC_I2C peripheral clock */
+//  RCC_APB1PeriphClockCmd(CODEC_I2C_CLK, ENABLE);
+//	RCC_AHB1PeriphClockCmd(CODEC_I2C_GPIO_CLOCK, ENABLE);
+//	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
+///* NVIC  Group depend */
+//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+//  /* CODEC_I2C SCL and SDA pins configuration -------------------------------------*/
+//  GPIO_InitStructure.GPIO_Pin = CODEC_I2C_SCL_PIN | CODEC_I2C_SDA_PIN; 
+//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+//  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+//  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+//  GPIO_Init(CODEC_I2C_GPIO, &GPIO_InitStructure);     
+//  /* Connect pins to I2C peripheral */
+//  GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SCL_PINSRC, CODEC_I2C_GPIO_AF);  
+//  GPIO_PinAFConfig(CODEC_I2C_GPIO, CODEC_I2S_SDA_PINSRC, CODEC_I2C_GPIO_AF);
+//	
+//  /* DMA1 channel_6 configuration ----------------------------------------------*/
+//  DMA_DeInit(DMA1_Stream6);
+//	DMA_InitStructure.DMA_Channel=DMA_Channel_1;
+//  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)I2C1_DR_Address;
+//  DMA_InitStructure.DMA_Memory0BaseAddr = (u32)I2C1_Buffer_Tx;
+//  DMA_InitStructure.DMA_DIR = DMA_DIR_MemoryToPeripheral;      // 从内存到 外设 
+//  DMA_InitStructure.DMA_BufferSize = BufferSize;
+//  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 指定外设地址不增加 
+//  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  // 指定内存地址加一
+//  DMA_InitStructure.DMA_PeripheralDataSize = DMA_MemoryDataSize_Byte;   // 传输数据 字大小 
+//  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+//  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+//  DMA_InitStructure.DMA_Priority = DMA_Priority_VeryHigh;
+//  DMA_Init(DMA1_Stream6, &DMA_InitStructure);
 
-  DMA_DeInit(DMA1_Stream5);
-	DMA_InitStructure.DMA_Channel=DMA_Channel_1;
-  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)I2C1_DR_Address;
-  DMA_InitStructure.DMA_Memory0BaseAddr = (u32)I2C1MasterRecerve;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;
-  DMA_InitStructure.DMA_BufferSize = BufferSize;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 指定外设地址不增加 
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  // 指定内存地址加一
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_MemoryDataSize_Byte;   // 传输数据 字大小 
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
-  DMA_Init(DMA1_Stream5, &DMA_InitStructure);	
-	
-  
-  /* I2C1 configuration ------------------------------------------------------*/
-  I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-  I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
-  I2C_InitStructure.I2C_OwnAddress1 = I2C1_SLAVE_ADDRESS7;
-  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-  I2C_InitStructure.I2C_ClockSpeed = ClockSpeed;
-	I2C_Cmd(I2C1, ENABLE); 
-  I2C_Init(I2C1, &I2C_InitStructure);	
+//  DMA_DeInit(DMA1_Stream5);
+//	DMA_InitStructure.DMA_Channel=DMA_Channel_1;
+//  DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)I2C1_DR_Address;
+//  DMA_InitStructure.DMA_Memory0BaseAddr = (u32)I2C1MasterRecerve;
+//  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;
+//  DMA_InitStructure.DMA_BufferSize = BufferSize;
+//  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable; // 指定外设地址不增加 
+//  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  // 指定内存地址加一
+//  DMA_InitStructure.DMA_PeripheralDataSize = DMA_MemoryDataSize_Byte;   // 传输数据 字大小 
+//  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+//  DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;
+//  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+//  DMA_Init(DMA1_Stream5, &DMA_InitStructure);	
+//	
+//  
+//  /* I2C1 configuration ------------------------------------------------------*/
+//  I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+//  I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+//  I2C_InitStructure.I2C_OwnAddress1 = I2C1_SLAVE_ADDRESS7;
+//  I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+//  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+//  I2C_InitStructure.I2C_ClockSpeed = ClockSpeed;
+//	I2C_Cmd(I2C1, ENABLE); 
+//  I2C_Init(I2C1, &I2C_InitStructure);	
+///* I2C1 EV_IRQ config */
+//	NVIC_InitStructure.NVIC_IRQChannel = I2C1_EV_IRQn; //嵌套中断通道为  USART1_IRQn
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; //抢占优先级 0 
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;    //响应优先级 0
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;     //中断使能
+//	NVIC_Init(&NVIC_InitStructure);	
+///* I2C1 EV_IRQ config */
+//	NVIC_InitStructure.NVIC_IRQChannel = I2C1_ER_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_Init(&NVIC_InitStructure);
+///* DMA1 Stream5 Interrupt config */	
+//	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Stream5_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_Init(&NVIC_InitStructure);
+///* DMA1 Stream6 Interrupt config */
+//	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Stream6_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_Init(&NVIC_InitStructure);
+  Init_I2CAnd_DMA();
 	Bsp_InitLed();
   while(1)
 	{
-		
-		masterRecerve();
+		masterRecerveData(0x30,I2C1MasterRecerve,6);
+		// masterRecerve();
 		for(i=0;i<6;i++)
 		{
 			if(I2C1MasterRecerve[i]!=i+2) break;
@@ -173,6 +201,16 @@ int main(void)
 				LED_Change(0);
 			}
 		}
+//		for(i=0;i<6;i++)
+//		{
+//			if(I2C1_MasterReceBuff[i]!=i+2) break;
+//			else 
+//				I2C1_MasterReceBuff[i]=0;
+//			if(i==5)
+//			{
+//				LED_Change(0);
+//			}
+//		}
 		
 		Delay(0xAFFFF);		
 		
@@ -233,8 +271,8 @@ void masterSend(void)
 		// DMA_ClearFlag(DMA1_Stream6,DMA_FLAG_TCIF6 | DMA_FLAG_HTIF6 | DMA_FLAG_TEIF6 | DMA_FLAG_DMEIF6 | DMA_FLAG_FEIF5 );
     /* Send I2C1 STOP Condition */
     // I2C_GenerateSTOP(I2C1, ENABLE);		
-		Delay(0xAFFFF);		
-		LED_Change(0);
+		//Delay(0xAFFFF);		
+		// LED_Change(0);
 }
   
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -12,7 +12,7 @@
           
           
           
-        <Column0>341</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+        <Column0>264</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
       </Workspace>
     <Build><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Debug-Log</Factory></Window></Windows></PreferedWindows><ColumnWidth0>26</ColumnWidth0><ColumnWidth1>1388</ColumnWidth1><ColumnWidth2>370</ColumnWidth2><ColumnWidth3>92</ColumnWidth3></Build><Debug-Log><ColumnWidth0>65</ColumnWidth0><ColumnWidth1>1791</ColumnWidth1></Debug-Log><TerminalIO/><Disassembly><MixedMode>1</MixedMode><CodeCovShow>1</CodeCovShow><InstrProfShow>1</InstrProfShow></Disassembly></Static>
     <Windows>
@@ -25,7 +25,7 @@
             <Factory>Workspace</Factory>
             <Session>
               
-            <NodeDict><ExpandedNode>neW</ExpandedNode><ExpandedNode>neW/STM8S_StdPeriph_Driver</ExpandedNode><ExpandedNode>neW/STM8S_StdPeriph_Driver/stm8s_i2c.c</ExpandedNode><ExpandedNode>neW/user</ExpandedNode></NodeDict></Session>
+            <NodeDict><ExpandedNode>neW</ExpandedNode><ExpandedNode>neW/STM8S_StdPeriph_Driver</ExpandedNode><ExpandedNode>neW/user</ExpandedNode></NodeDict></Session>
           </Tab>
         </Tabs>
         
@@ -35,14 +35,14 @@
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\main.c</Filename><XPos>0</XPos><YPos>17</YPos><SelStart>1039</SelStart><SelEnd>1039</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>C:\Program Files (x86)\IAR Systems\Embedded Workbench 6.0\stm8\src\lib\main.h</Filename><XPos>0</XPos><YPos>9</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\src\stm8s_i2c.c</Filename><XPos>0</XPos><YPos>717</YPos><SelStart>24498</SelStart><SelEnd>24525</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\inc\stm8s_i2c.h</Filename><XPos>0</XPos><YPos>258</YPos><SelStart>12021</SelStart><SelEnd>12050</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\Work_Space\RoboticPlatform\stm8_v1_30I2C\STM8S_StdPeriph_Driver\src\stm8s_i2c.c</Filename><XPos>0</XPos><YPos>516</YPos><SelStart>19944</SelStart><SelEnd>19944</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\main.c</Filename><XPos>0</XPos><YPos>57</YPos><SelStart>2613</SelStart><SelEnd>2613</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\..\Work_Space\RoboticPlatform\stm8_v1_30I2C\STM8S_StdPeriph_Driver\src\stm8s_i2c.c</Filename><XPos>0</XPos><YPos>586</YPos><SelStart>20296</SelStart><SelEnd>20296</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\Program Files (x86)\IAR Systems\Embedded Workbench 6.0\stm8\src\lib\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\stm8s_it.c</Filename><XPos>0</XPos><YPos>7</YPos><SelStart>1278</SelStart><SelEnd>1285</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\src\stm8s_exti.c</Filename><XPos>0</XPos><YPos>74</YPos><SelStart>3540</SelStart><SelEnd>3540</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\stm8s_conf.h</Filename><XPos>0</XPos><YPos>51</YPos><SelStart>774</SelStart><SelEnd>774</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\inc\stm8s_exti.h</Filename><XPos>0</XPos><YPos>25</YPos><SelStart>1640</SelStart><SelEnd>1666</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\src\stm8s_gpio.c</Filename><XPos>0</XPos><YPos>184</YPos><SelStart>7362</SelStart><SelEnd>7362</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\inc\stm8s_gpio.h</Filename><XPos>0</XPos><YPos>44</YPos><SelStart>2002</SelStart><SelEnd>2023</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\STM8S_StdPeriph_Driver\inc\stm8s.h</Filename><XPos>0</XPos><YPos>2602</YPos><SelStart>108237</SelStart><SelEnd>108256</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-044d0450><key>iaridepm.enu1</key></Toolbar-044d0450></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>747</Bottom><Right>436</Right><x>-2</x><y>-2</y><xscreen>52</xscreen><yscreen>31</yscreen><sizeHorzCX>27083</sizeHorzCX><sizeHorzCY>31697</sizeHorzCY><sizeVertCX>228125</sizeVertCX><sizeVertCY>765849</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>183</Bottom><Right>1922</Right><x>-2</x><y>-2</y><xscreen>1924</xscreen><yscreen>185</yscreen><sizeHorzCX>1002083</sizeHorzCX><sizeHorzCY>189162</sizeHorzCY><sizeVertCX>27083</sizeVertCX><sizeVertCY>31697</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-008d1558><key>iaridepm.enu1</key></Toolbar-008d1558></Sizes></Row0><Row1><Sizes/></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>784</Bottom><Right>338</Right><x>-2</x><y>-2</y><xscreen>26</xscreen><yscreen>25</yscreen><sizeHorzCX>13542</sizeHorzCX><sizeHorzCY>25562</sizeHorzCY><sizeVertCX>177083</sizeVertCX><sizeVertCY>803681</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>146</Bottom><Right>1922</Right><x>-2</x><y>-2</y><xscreen>1924</xscreen><yscreen>148</yscreen><sizeHorzCX>1002083</sizeHorzCX><sizeHorzCY>151329</sizeHorzCY><sizeVertCX>13542</sizeVertCX><sizeVertCY>25562</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

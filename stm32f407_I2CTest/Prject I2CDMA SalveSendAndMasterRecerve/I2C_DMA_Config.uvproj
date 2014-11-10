@@ -444,6 +444,11 @@
               <FileType>1</FileType>
               <FilePath>.\user\Bsp\src\Bsp_send_Data.c</FilePath>
             </File>
+            <File>
+              <FileName>Bsp_I2C_DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\user\Bsp\src\Bsp_I2C_DMA.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1238,6 +1243,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>Bsp_I2C_DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\user\Bsp\src\Bsp_I2C_DMA.c</FilePath>
             </File>
           </Files>
         </Group>
